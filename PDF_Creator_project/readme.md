@@ -1,1 +1,5 @@
 rabbitmq: docker run --name rabbitmq-container --rm -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 -d rabbitmq:3-management
+postre: docker run --name postgresql-container -p 5433:5432 -e POSTGRES_PASSWORD=qwerty009 -e POSTGRES_DB=app_db -v pgdata:/var/lib/postgresql/data -d postgres
+redis: docker run --name redis-container -v redis-volume:/data -p 6380:6380 -d redis-filesync
+app1: docker run --name users-application-container-1 -e REDIS_HOST=172.17.0.4 -e REDIS_PORT=6380 -e SPRING_DATASOURCE_USERNAME=postgres -e SPRING_DATASOURCE_PASSWORD=qwerty009 -e RABBIT_HOST=172.17.0.2 -e SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.3:5432/app_db -p 80:80 user-application-image
+app2: docker run --name users-application-container-2 -e REDIS_HOST=172.17.0.4 -e REDIS_PORT=6380 -e SPRING_DATASOURCE_USERNAME=postgres -e SPRING_DATASOURCE_PASSWORD=qwerty009 -e RABBIT_HOST=172.17.0.2 -e SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.3:5432/app_db -p 8080:8080 user-applicationlisener-image
